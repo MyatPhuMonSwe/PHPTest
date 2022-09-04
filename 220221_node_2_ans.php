@@ -32,21 +32,14 @@ else if ($input_string[0] == $omote && $input_string[$number - 1] == $omote)
     $black_count_result = $number;
 
 else {
-    echo $input_string[0];
-    echo $ura;
     //一文字目がｗなら最初のｂのインデックから反転させていく
     if ($input_string[0] == $ura) {
-        echo "inside ura";
-        $start = array_search($omote, $input_string, true);
-        $last = rightSearch($input_string, $ura);
-        echo "start" . $start;
-        echo "last" . $last;
+        $start = array_search($omote, $input_string, true);//1
+        $last = rightSearch($input_string, $ura);//
         turn($input_string, $ura, $omote, $start, $last);
         $black_count_result = getSize($input_string, $omote);
-        echo "inside ura";
     } //一文字目がｂなら最初のｗのインデックスから反転させていく
     else {
-        echo "inside omote";
         $start = array_search($ura, $input_string, true);
         $last = rightSearch($input_string, $omote);
         turn($input_string, $ura, $omote, $start, $last);
@@ -57,19 +50,21 @@ echo "\n$black_count_result\n";
 
 function turn($input_string, $u, $o, $start, $last)
 {
-    echo "\n start, last". $start . ',' . $last;
+    // echo "Turn function";
     if ($start > $last)
         return true;
     else {
-        for ($i = 0; $i < sizeof($input_string); $i++) {
-            if ($input_string[$i] == "b") //表なら裏に
+        for ($i = $start; $i <= $last; $i++) {
+            //表なら裏に
+            if ($input_string[$i] == "b")
                 $input_string[$i] = "w";
             else
-                $input_string[$i] = "b";//裏なら表に
+                //裏なら表に
+                $input_string[$i] = "b";
         }
-//        $start = array_search($o, $input_string, true);
-//        $last = rightSearch($input_string, $u);
-//        turn($input_string, $u, $o, $start, $last);
+        $start = array_search($o, $input_string, true);
+        $last = rightSearch($input_string, $u);
+        turn($input_string, $u, $o, $start, $last);
     }
 }
 
@@ -79,20 +74,18 @@ function getSize($input_string, $omote)
     for ($i = 0; $i < sizeof($input_string); $i++) {
         if ($input_string[$i] == $omote)
             $count += 1;
-        echo "count: " . $input_string[$i];
     }
     return $count;
 }
 
 function rightSearch($input_string, $value)
 {
-    echo "Start!!";
     $count = sizeof($input_string);
-    while($count > 0)
-    {
+    while ($count > 0) {
         if ($input_string[$count - 1] == $value)
             return $count - 1;
         $count--;
     }
 }
+
 ?>
